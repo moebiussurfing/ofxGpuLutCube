@@ -1,0 +1,3 @@
+ofxGpuLutCube
+ofxGui
+ofxSceneTEST

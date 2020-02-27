@@ -21,7 +21,7 @@ void ofxGpuLutCube::setupFiles()
 		ofStringReplace(lutPath, "LUT", "");
 		ofStringReplace(lutPath, ".cube", "");
 		ofStringReplace(lutPath, ".CUBE", "");
-		ofStringReplace(lutPath, "\\", "");//deltete '\' char from name
+		ofStringReplace(lutPath, "\\", "");//delete '\' char from name
 		lutNames[i] = lutPath;
 
 		ofLogNotice(__FUNCTION__) << "lutPaths[" << i << "]: " << lutPaths[i];

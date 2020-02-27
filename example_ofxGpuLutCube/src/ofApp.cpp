@@ -42,7 +42,7 @@ void ofApp::draw()
 	LUT.draw();
 
 	//original thumb image
-	float ww = 500;
+	float ww = ofGetWidth() *0.20f;
 	float ratio = image.getHeight() / image.getWidth();
 	image.draw(ofGetWidth() - ww, 0, ww, ww*ratio);
 

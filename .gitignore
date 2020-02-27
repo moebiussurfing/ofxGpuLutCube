@@ -549,3 +549,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+example_ofxGpuLutCube/bin/example_ofxGpuLutCube_debug.exp

@@ -48,6 +48,9 @@ void ofxGpuLutCube::setupLUT(std::string s)
 
 	//-
 
+	//code from 
+	//https://github.com/johanjohan to point me to this source here https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
+
 	const string key_LUT_3D_SIZE = "LUT_3D_SIZE";
 
 	//A. multiple pow2 lut sizes: 16, 32, 64

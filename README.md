@@ -19,11 +19,14 @@ https://grossgrade.com/
 ## Usage
 
 ```c++
-ofApp.h
+ofApp.h:
+
 #include "ofxGpuLutCube.h"
 ofxGpuLutCube LUT;
 
-ofApp.cpp
+//--
+
+ofApp.cpp:
 
 //setup()
 LUT.setup();

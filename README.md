@@ -1,7 +1,7 @@
 addon modifications by moebiussurfing
 https://github.com/moebiussurfing
 
-based in and using the code of HUBRIS:
+based on and using the code of HUBRIS:
 
 https://github.com/youandhubris/GPU-LUT-OpenFrameworks
 
@@ -26,3 +26,4 @@ for the original https://github.com/yasuhirohoshino/ofxGpuLut
 ![Alt text](/screenshot2.JPG?raw=true "screenshot2")
 ![Alt text](/screenshot3.JPG?raw=true "screenshot3")
 ![Alt text](/screenshot4.JPG?raw=true "screenshot4")
+

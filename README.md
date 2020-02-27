@@ -60,16 +60,17 @@ LUT.draw();
 Addon modifications by moebiussurfing
 https://github.com/moebiussurfing
 
-based on and using the code of HUBRIS:
+Based on and using the code of HUBRIS:
 https://github.com/youandhubris/GPU-LUT-OpenFrameworks
 https://forum.openframeworks.cc/t/gpu-lut-photoshop/18070
+
 BY HUBRIS [http://cargocollective.com/hubris]
 [http://github.com/youandhubris]
 
-THANKS to 
+THANKS to @johanjohan
 https://github.com/johanjohan 
 to point me to this source here https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
-pow2 snipped from @johanjohan
+pow2 snippet from @johanjohan
 
 THANKS to
 https://github.com/yasuhirohoshino 

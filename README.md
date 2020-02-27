@@ -1,7 +1,7 @@
 addon modifications by moebiussurfing
 https://github.com/moebiussurfing
 
-based in and using the code of HUBRIS:
+based on and using the code of HUBRIS:
 
 https://github.com/youandhubris/GPU-LUT-OpenFrameworks
 

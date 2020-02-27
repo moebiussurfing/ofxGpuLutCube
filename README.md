@@ -22,7 +22,7 @@ for the original https://github.com/yasuhirohoshino/ofxGpuLut
 
 ## Screenshots
 
-[![link text](screenshot1.JPG)]()
-[![link text](screenshot2.JPG)]()
-[![link text](screenshot3.JPG)]()
-[![link text](screenshot4.JPG)]()
+![Alt text](/screenshot1.JPG?raw=true "screenshot1")
+![Alt text](/screenshot2.JPG?raw=true "screenshot2")
+![Alt text](/screenshot3.JPG?raw=true "screenshot3")
+![Alt text](/screenshot4.JPG?raw=true "screenshot4")

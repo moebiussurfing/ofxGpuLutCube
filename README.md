@@ -1,10 +1,11 @@
 # ofxGpuLutCube
 
-openFrameworks addon to apply LUT (Color Lookup Table) filter shader from '.cube' files.
-Inspired from https://github.com/yasuhirohoshino/ofxGpuLut that does the same but with .png files.
+openFrameworks addon to apply LUT (Color Lookup Table) filter shader from standard '.cube' files. (sizes 16, 32, 64)
+
+Inspired from https://github.com/yasuhirohoshino/ofxGpuLut that does the same but with special '.png' files.
 
 Cool app to batch convert and create LUT files:
-https://grossgrade.com/en/
+https://grossgrade.com/
 
 
 ## Screenshots
@@ -40,7 +41,7 @@ LUT.draw();
 ## Features
 
 - easy integration into your ofApp
-- LUT files browsing
+- LUT files folder browsing
 - parameter to set filter mix/dry
 - included example
 
@@ -57,12 +58,9 @@ Addon modifications by moebiussurfing
 https://github.com/moebiussurfing
 
 based on and using the code of HUBRIS:
-
 https://github.com/youandhubris/GPU-LUT-OpenFrameworks
 https://forum.openframeworks.cc/t/gpu-lut-photoshop/18070
-
 BY HUBRIS [http://cargocollective.com/hubris]
-
 [http://github.com/youandhubris]
 
 THANKS to 

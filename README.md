@@ -4,7 +4,7 @@ openFrameworks addon to apply LUT (Color Lookup Table) filter shader from standa
 
 Inspired from https://github.com/yasuhirohoshino/ofxGpuLut that does the same but with special '.png' files.
 
-Cool app to batch convert and create LUT files:
+Cool Windows only app to batch convert and create LUT files:
 https://grossgrade.com/
 
 

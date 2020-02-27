@@ -76,3 +76,8 @@ https://github.com/yasuhirohoshino
 for the original https://github.com/yasuhirohoshino/ofxGpuLut
 
 
+## TODO:
+
+- set draw position and size
+- better solution to v flip thing..
+- no use internal fbo or getter setter by reference..

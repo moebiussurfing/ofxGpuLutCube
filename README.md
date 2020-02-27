@@ -66,7 +66,7 @@ BY HUBRIS [http://cargocollective.com/hubris]
 THANKS to 
 https://github.com/johanjohan 
 to point me to this source here https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
-use his pow2 snipped too
+pow2 snipped from @johanjohan
 
 THANKS to
 https://github.com/yasuhirohoshino 

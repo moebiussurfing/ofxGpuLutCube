@@ -9,10 +9,7 @@ void ofApp::setup()
 	gui.add(LUT.params);
 	gui.setPosition(10, 300);
 
-	//scene
-#ifndef USE_ofxSceneTEST
 	image.load("picture.jpg");
-#endif
 }
 
 //--------------------------------------------------------------
@@ -20,17 +17,8 @@ void ofApp::update()
 {
 	LUT.begin();
 
-	//-
-
 	//draw scene
-
-#ifdef USE_ofxSceneTEST
-	scene.drawAll();
-#else
 	image.draw(0, 0, ofGetWidth(), ofGetHeight());
-#endif
-
-	//-
 
 	LUT.end();
 }
@@ -71,17 +59,6 @@ void ofApp::keyPressed(int key)
 	{
 		LUT.previous();
 	}
-
-	//--
-
-	//scene
-#ifdef USE_ofxSceneTEST
-	if (key == 's')
-	{
-		bool b = !scene.getGuiVisible();
-		scene.setGuiVisible(b);
-	}
-#endif
 }
 
 //--------------------------------------------------------------

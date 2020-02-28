@@ -102,8 +102,8 @@ void ofxGpuLutCube::setupFiles()
 		ofStringReplace(lutPath, "\\", "");//delete '\' char from name
 		lutNames[i] = lutPath;
 
-		ofLogNotice(__FUNCTION__) << "lutPaths[" << i << "]: " << lutPaths[i];
-		ofLogNotice(__FUNCTION__) << "lutNames[" << i << "]: " << lutNames[i];
+		ofLogNotice(__FUNCTION__) << "[" << i << "] " << lutPaths[i];
+		ofLogNotice(__FUNCTION__) << lutNames[i];
 	}
 
 	lutIndex = 0;
@@ -112,9 +112,9 @@ void ofxGpuLutCube::setupFiles()
 //--------------------------------------------------------------
 bool ofxGpuLutCube::loadLUT(std::string s)
 {
-	ofLogNotice(__FUNCTION__) << "lutIndex: " << lutIndex;
-	ofLogNotice(__FUNCTION__) << "lutPath: " << lutPaths[lutIndex];
-	ofLogNotice(__FUNCTION__) << "lutName: " << lutNames[lutIndex];
+	ofLogNotice(__FUNCTION__) << "Index: " << lutIndex;
+	ofLogNotice(__FUNCTION__) << "Path: " << lutPaths[lutIndex];
+	ofLogNotice(__FUNCTION__) << "Name: " << lutNames[lutIndex];
 	LUTname = lutNames[lutIndex];
 
 	//-
@@ -340,7 +340,7 @@ void ofxGpuLutCube::setSelectedLut(int lut)
 	else if (lut > numLuts - 1)
 		lut = numLuts - 1;
 	DISABLE_Callbacks = false;
-	
+
 	lutIndex = lut;
 }
 

@@ -1,4 +1,70 @@
 #include "ofxGpuLutCube.h"
+
+//--------------------------------------------------------------
+void ofxGpuLutCube::setup()
+{
+	//-
+
+	//load the shader
+	lutFilter.load(path_Shader);
+
+	//read lut files folder
+	setupFiles();
+
+	//-
+
+	//params
+	lutIndex.set("INDEX", 0, 0, numLuts - 1);
+	LUTname.set("", "");
+	LUTname.setSerializable(false);
+	control1.set("MIX", 1, 0, 1);
+
+	params.setName("ofxGpuLutCube");
+	params.add(lutIndex);
+	params.add(LUTname);
+	params.add(control1);
+
+	//TODO:
+	//another control to the shader..
+	//control2.set("control2", 1, 0, 1);//not used in shader
+	//params.add(control2);//not used in shader. could addit to other function..
+
+	//gui
+	//gui.setup("LUT");
+	//gui.add(params);
+
+	//DISABLE_Callbacks = true;
+	ofAddListener(params.parameterChangedE(), this, &ofxGpuLutCube::Changed_params);
+	DISABLE_Callbacks = false;
+
+	//--
+
+	//will load first LUT file on folder (auto bc changed callback)
+	lutIndex = 0;
+
+	//--
+
+	//source
+	fbo.allocate(ofGetWidth(), ofGetHeight());
+
+	//TODO:
+	//v flipping issues
+	//fbo.getTextureReference().getTextureData().bFlipTexture = bFlip;
+	//set a plane to texture
+	if (!bFlip)
+	{
+		plane.set(ofGetWidth(), ofGetHeight(), 2, 2);//size, col, rows..
+		plane.setPosition(0.5f*ofGetWidth(), 0.5f*ofGetHeight(), 0);
+	}
+	else
+	{
+		plane.set(ofGetWidth(), -ofGetHeight(), 2, 2);
+		plane.setPosition(0.5f*ofGetWidth(), 0.5f*ofGetHeight(), 0);
+	}
+
+	//-
+}
+
 //--------------------------------------------------------------
 void ofxGpuLutCube::setupFiles()
 {
@@ -18,7 +84,7 @@ void ofxGpuLutCube::setupFiles()
 		std::string lutPath = dir.getPath(i);
 		lutPaths[i] = lutPath;
 
-		ofStringReplace(lutPath, "LUT", "");
+		ofStringReplace(lutPath, path_LUT_files, "");
 		ofStringReplace(lutPath, ".cube", "");
 		ofStringReplace(lutPath, ".CUBE", "");
 		ofStringReplace(lutPath, "\\", "");//delete '\' char from name
@@ -122,7 +188,7 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		ofDisableArbTex();
 
 		//reference from http://content.gpwiki.org/index.php/OpenGL:Tutorials:3D_Textures
-		
+
 		//create a 3D texture
 		glEnable(GL_TEXTURE_3D);
 		glGenTextures(1, &texture3D);
@@ -145,69 +211,6 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		return false;
 	else
 		return true;
-}
-
-//--------------------------------------------------------------
-void ofxGpuLutCube::setup()
-{
-	//-
-
-	//load the shader
-	lutFilter.load("Shaders/ShaderLUT/lut_filter");
-
-	//read lut files folder
-	setupFiles();
-
-	//-
-
-	//params
-	lutIndex.set("INDEX", 0, 0, numLuts - 1);
-	LUTname.set("NAME", "");
-	LUTname.setSerializable(false);
-	control1.set("MIX", 1, 0, 1);
-
-	params.setName("ofxGpuLutCube");
-	params.add(lutIndex);
-	params.add(LUTname);
-	params.add(control1);
-	
-	//TODO:
-	//another control to the shader..
-	//control2.set("control2", 1, 0, 1);//not used in shader
-	//params.add(control2);//not used in shader. could addit to other function..
-
-	//gui
-	//gui.setup("LUT");
-	//gui.add(params);
-
-	ofAddListener(params.parameterChangedE(), this, &ofxGpuLutCube::Changed_params);
-
-	//--
-
-	//will load first LUT file on folder (auto bc changed callback)
-	lutIndex = 0;
-
-	//--
-
-	//source
-	fbo.allocate(ofGetWidth(), ofGetHeight());
-
-	//TODO:
-	//v flipping issues
-	//fbo.getTextureReference().getTextureData().bFlipTexture = bFlip;
-	//set a plane to texture
-	if (!bFlip)
-	{
-		plane.set(ofGetWidth(), ofGetHeight(), 2, 2);//size, col, rows..
-		plane.setPosition(0.5f*ofGetWidth(), 0.5f*ofGetHeight(), 0);
-	}
-	else
-	{
-		plane.set(ofGetWidth(), -ofGetHeight(), 2, 2);
-		plane.setPosition(0.5f*ofGetWidth(), 0.5f*ofGetHeight(), 0);
-	}
-
-	//-
 }
 
 //--------------------------------------------------------------
@@ -280,19 +283,27 @@ void ofxGpuLutCube::windowResized(int w, int h)
 //--------------------------------------------------------------
 void ofxGpuLutCube::next()
 {
-	//lutIndex_PRE = lutIndex;
-	lutIndex++;
-	if (lutIndex >= numLuts)
-		lutIndex = 0;
+	DISABLE_Callbacks = true;
+	int i = lutIndex;
+	i++;
+	if (i >= numLuts)
+		i = 0;
+	DISABLE_Callbacks = false;
+
+	lutIndex = i;
 }
 
 //--------------------------------------------------------------
 void ofxGpuLutCube::previous()
 {
-	//lutIndex_PRE = lutIndex;
-	lutIndex--;
-	if (lutIndex <= 0)
-		lutIndex = numLuts - 1;
+	DISABLE_Callbacks = true;
+	int i = lutIndex;
+	i--;
+	if (i <= 0)
+		i = numLuts - 1;
+	DISABLE_Callbacks = false;
+
+	lutIndex = i;
 }
 
 //--------------------------------------------------------------
@@ -308,19 +319,21 @@ void ofxGpuLutCube::exit()
 }
 
 //--------------------------------------------------------------
-void ofxGpuLutCube::setSelectedLut(int i)
+void ofxGpuLutCube::setSelectedLut(int lut)
 {
-	//lutIndex_PRE = lutIndex;
-	lutIndex = i;
-	if (lutIndex <= 0)
-		lutIndex = 0;
-	else if (lutIndex > numLuts - 1)
-		lutIndex = numLuts - 1;
+	DISABLE_Callbacks = true;
+	if (lut < 0)
+		lut = 0;
+	else if (lut > numLuts - 1)
+		lut = numLuts - 1;
+	DISABLE_Callbacks = false;
+	
+	lutIndex = lut;
 }
 
 void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 {
-	//if (!DISABLE_Callbacks)
+	if (!DISABLE_Callbacks)
 	{
 		string name = e.getName();
 
@@ -333,6 +346,13 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 
 		if (name == "INDEX")
 		{
+			DISABLE_Callbacks = true;
+			if (lutIndex < 0)
+				lutIndex = 0;
+			else if (lutIndex > numLuts - 1)
+				lutIndex = numLuts - 1;
+			DISABLE_Callbacks = false;
+
 			bool b = loadLUT(lutPaths[lutIndex]);
 
 			//TODO:

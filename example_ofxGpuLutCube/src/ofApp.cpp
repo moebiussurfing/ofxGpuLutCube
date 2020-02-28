@@ -55,7 +55,7 @@ void ofApp::draw()
 	string str;
 	str += "PRESS UP/DOWN TO BROWSE '.cube' FILES\n";
 	str += "FROM FOLDER 'data/" + LUT.path_LUT_files + "/'\n";
-	str += "[" + ofToString(LUT.lutIndex) + "/" + ofToString(LUT.numLuts) + "] " + ofToString(LUT.LUTname);
+	str += "[" + ofToString(LUT.lutIndex) + "/" + ofToString(LUT.numLuts - 1) + "] " + ofToString(LUT.LUTname);
 	ofDrawBitmapStringHighlight(str, 10, 20);
 }
 

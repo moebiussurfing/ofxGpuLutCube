@@ -23,8 +23,10 @@ class ofxGpuLutCube {
 
 public:
 
-	std::string path_LUT_files = "LUT";
-
+	std::string path_LUT_files = "ofxGpuLutCube/LUT";
+	std::string path_Shader = "Shaders/ofxGpuLutCube/lut_filter";
+	
+	//params
 	ofParameterGroup params;
 	ofParameter<std::string> LUTname;
 	ofParameter<int> lutIndex;
@@ -40,6 +42,7 @@ public:
 	void exit();
 	void windowResized(int w, int h);
 	void Changed_params(ofAbstractParameter &e);
+	bool DISABLE_Callbacks;
 	bool loadLUT(std::string s);
 
 	ofFbo fbo;

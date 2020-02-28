@@ -32,7 +32,7 @@ void ofxGpuLutCube::setupFiles()
 }
 
 //--------------------------------------------------------------
-void ofxGpuLutCube::setupLUT(std::string s)
+bool ofxGpuLutCube::setupLUT(std::string s)
 {
 	ofLogNotice(__FUNCTION__) << "lutIndex:" << lutIndex;
 	ofLogNotice(__FUNCTION__) << "lutPaths[lutIndex]:" << lutPaths[lutIndex];
@@ -52,6 +52,9 @@ void ofxGpuLutCube::setupLUT(std::string s)
 	//https://github.com/johanjohan to point me to this source here https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
 
 	const string key_LUT_3D_SIZE = "LUT_3D_SIZE";
+
+	//must check if size is refused 
+	bool bErrorBadSize = false;
 
 	//A. multiple pow2 lut sizes: 16, 32, 64
 	LUT3dSize = 32;//most common
@@ -78,13 +81,17 @@ void ofxGpuLutCube::setupLUT(std::string s)
 	if (LUT.size() != (pow(LUT3dSize, 3.0)))
 	{
 		ofLogError(__FUNCTION__) << "LUT size is incorrect.";
-		return;//skip load this lut
+		bErrorBadSize = true;
+
+		//return;//skip load this lut
 		//std::exit(1);
 	}
 	else if (ofNextPow2(LUT3dSize) != LUT3dSize)
 	{
 		ofLogError(__FUNCTION__) << "LUT needs to be pow2.";
-		return;//skip load this lut
+		bErrorBadSize = true;
+
+		//return;//skip load this lut
 		//std::exit(1);
 	}
 
@@ -109,27 +116,34 @@ void ofxGpuLutCube::setupLUT(std::string s)
 
 	//--
 
-	//disable rectangle textures
-	ofDisableArbTex();
+	if (bErrorBadSize == false)
+	{
+		//disable rectangle textures
+		ofDisableArbTex();
 
-	//create a 3D texture
-	//reference from http://content.gpwiki.org/index.php/OpenGL:Tutorials:3D_Textures
-	glEnable(GL_TEXTURE_3D);
-	glGenTextures(1, &texture3D);
-	glBindTexture(GL_TEXTURE_3D, texture3D);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-	glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB, LUT3dSize, LUT3dSize, LUT3dSize, 0, GL_RGB,
-		GL_FLOAT, &LUT[0]);
-	glBindTexture(GL_TEXTURE_3D, 0);
-	glDisable(GL_TEXTURE_3D);
+		//create a 3D texture
+		//reference from http://content.gpwiki.org/index.php/OpenGL:Tutorials:3D_Textures
+		glEnable(GL_TEXTURE_3D);
+		glGenTextures(1, &texture3D);
+		glBindTexture(GL_TEXTURE_3D, texture3D);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB, LUT3dSize, LUT3dSize, LUT3dSize, 0, GL_RGB,
+			GL_FLOAT, &LUT[0]);
+		glBindTexture(GL_TEXTURE_3D, 0);
+		glDisable(GL_TEXTURE_3D);
+	}
 
 	//-
 
-	//ofEnableArbTex();
+	//must check if size is refused 
+	if (bErrorBadSize)
+		return false;
+	else
+		return true;
 }
 
 //--------------------------------------------------------------
@@ -158,6 +172,14 @@ void ofxGpuLutCube::setup()
 	lutIndex = 0;
 	LUTname = lutNames[lutIndex];
 	setupLUT(lutPaths[lutIndex]);
+
+	//must check if size is refused 
+	//bool b = setupLUT(lutPaths[lutIndex]);
+	//if (!b)//error
+	//{
+	//	lutIndex = lutIndex_PRE;//load prev
+	//	setupLUT(lutPaths[lutIndex]);
+	//}
 
 	//--
 
@@ -249,19 +271,33 @@ void ofxGpuLutCube::windowResized(int w, int h) {
 //--------------------------------------------------------------
 void ofxGpuLutCube::next()
 {
+	lutIndex_PRE = lutIndex;
 	lutIndex++;
 	if (lutIndex >= numLuts)
 		lutIndex = 0;
-	setupLUT(lutPaths[lutIndex]);
+
+	bool b = setupLUT(lutPaths[lutIndex]);
+	//if (!b)//error
+	//{
+	//	lutIndex = lutIndex_PRE;//load prev
+	//	setupLUT(lutPaths[lutIndex]);
+	//}
 }
 
 //--------------------------------------------------------------
 void ofxGpuLutCube::previous()
 {
+	lutIndex_PRE = lutIndex;
 	lutIndex--;
 	if (lutIndex <= 0)
 		lutIndex = numLuts - 1;
-	setupLUT(lutPaths[lutIndex]);
+
+	bool b = setupLUT(lutPaths[lutIndex]);
+	//if (!b)//error
+	//{
+	//	lutIndex = lutIndex_PRE;//load prev
+	//	setupLUT(lutPaths[lutIndex]);
+	//}
 }
 
 //for internal gui

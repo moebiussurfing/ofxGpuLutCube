@@ -65,6 +65,7 @@ Addon modifications by MoebiusSurfing
 https://github.com/moebiussurfing
 
 Based on and using the code of HUBRIS:
+
 https://github.com/youandhubris/GPU-LUT-OpenFrameworks
 https://forum.openframeworks.cc/t/gpu-lut-photoshop/18070
 
@@ -73,7 +74,8 @@ BY HUBRIS [http://cargocollective.com/hubris]
 
 THANKS to @johanjohan:
 https://github.com/johanjohan 
-to point me to this source here: https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
+to point me to this source here: 
+https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
 pow2 snippet from @johanjohan.
 
 THANKS to

@@ -23,9 +23,6 @@ void ofApp::update()
 	image.draw(0, 0, ofGetWidth(), ofGetHeight());
 
 	LUT.end();
-
-
-	
 }
 
 //--------------------------------------------------------------
@@ -41,7 +38,9 @@ void ofApp::draw()
 
 	//-
 
-	ofEnableArbTex();//i am not sure why, sometimes is required when combining with other fbo's
+	//ofEnableArbTex();//NOTE: i am not sure why, sometimes is required when combining with other fbo's
+	//debug
+	//cout << "ofGetUsingArbTex(): " << ofGetUsingArbTex() << endl;
 
 	//gui
 	gui.draw();
@@ -71,6 +70,5 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h) {
 	LUT.windowResized(w, h);
-	
 }
 

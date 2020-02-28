@@ -15,8 +15,8 @@ void ofxGpuLutCube::setup()
 
 	//params
 	lutIndex.set("LUT", 0, 0, numLuts - 1);
-	LUTname.set("", "");
-	LUTname.setSerializable(false);
+	LUTname.set("", "");//no name to reduce gui panel space
+	LUTname.setSerializable(false);//not interested to save name, just the index
 	control1.set("MIX", 1, 0, 1);
 
 	params.setName("ofxGpuLutCube");
@@ -45,7 +45,17 @@ void ofxGpuLutCube::setup()
 	//--
 
 	//source
-	fbo.allocate(ofGetWidth(), ofGetHeight());
+
+	//fbo settings
+	ofDisableArbTex();
+
+	ofFbo::Settings settings;
+	settings.internalformat = GL_RGBA;
+	settings.width = ofGetWidth();
+	settings.height = ofGetHeight();
+	fbo.allocate(settings);
+
+	ofEnableArbTex();
 
 	//TODO:
 	//v flipping issues
@@ -63,6 +73,8 @@ void ofxGpuLutCube::setup()
 	}
 
 	//-
+
+	//ofEnableArbTex();//NOTE: i am not sure why, sometimes is required when combining with other fbo's
 }
 
 //--------------------------------------------------------------
@@ -260,8 +272,9 @@ void ofxGpuLutCube::draw()
 //--------------------------------------------------------------
 void ofxGpuLutCube::windowResized(int w, int h)
 {
+	ofDisableArbTex();
 	fbo.allocate(ofGetWidth(), ofGetHeight());
-	//fbo.getTextureReference().getTextureData().bFlipTexture = bFlip;
+	ofEnableArbTex();
 
 	//TODO:
 	//v flipping issues

@@ -25,46 +25,34 @@ public:
 
 	std::string path_LUT_files = "LUT";
 
-	//ofxPanel gui;
 	ofParameterGroup params;
+	ofParameter<std::string> LUTname;
+	ofParameter<int> lutIndex;
 	ofParameter<float> control1;
 	ofParameter<float> control2;
 
+	//internal gui
+	//ofxPanel gui;
+	//void drawGui();
+
 	void setup();
 	void draw();
+	void exit();
 	void windowResized(int w, int h);
+	void Changed_params(ofAbstractParameter &e);
+	bool loadLUT(std::string s);
 
-	//for internal gui
-	//void update();
-	//void drawGui();
-	//void keyPressed(int key);
-
-	//browse
-	void next();
-	void previous();
-
-	bool setupLUT(std::string s);
-	void setupFiles();
-
+	ofFbo fbo;
 	void begin();
 	void end();
 
-	ofFbo fbo;
-
-	//TODO:
-	//WORKAROUND
-	//v flipping issues
-	bool bFlip = true;
-	//ofTexture texFlipped;
-
 	//files
+	void setupFiles();
 	std::string LUTpath;
-	std::string LUTname;
 	vector<std::string> lutPaths;
 	vector<std::string> lutNames;
-	int lutIndex;
-	int lutIndex_PRE = 0;
 	int numLuts;
+	//int lutIndex_PRE = 0;
 
 	//shader
 	ofShader lutFilter;
@@ -78,32 +66,23 @@ public:
 
 	//-
 
+	//TODO:
+	//WORKAROUND
+	//v flipping issues
+	bool bFlip = true;
+	//ofTexture texFlipped;
+	void setVflip(bool b)
+	{
+		bFlip = b;
+	}
+
+	//-
+
 	//API
-
-	int geNumtLuts()
-	{
-		return numLuts;
-	}
-	void setSelectedLut(int i)
-	{
-		lutIndex_PRE = lutIndex;
-		lutIndex = i;
-		if (lutIndex <= 0)
-			lutIndex = 0;
-		else if (lutIndex > numLuts - 1)
-			lutIndex = numLuts - 1;
-
-		bool bLoaded;
-		bLoaded = setupLUT(lutPaths[lutIndex]);
-		if (bLoaded)
-			ofLogNotice(__FUNCTION__) << "LUT file loaded";
-		else
-		{
-			ofLogError(__FUNCTION__) << "LUT file " + ofToString(lutIndex) + " not loaded";
-			ofLogError(__FUNCTION__) << "back to previous lut " + ofToString(lutIndex_PRE) + " that worked";
-			lutIndex = lutIndex_PRE;
-			//must check if size is refused 
-			setupLUT(lutPaths[lutIndex]);
-		}
-	}
+	
+	//browse
+	void next();
+	void previous();
+	int geNumtLuts();
+	void setSelectedLut(int i);
 };

@@ -5,7 +5,7 @@ void ofApp::setup()
 {
 	LUT.setup();
 
-	gui.setup("LUT");
+	gui.setup("CONTROL ofxGpuLutCube");
 	gui.add(LUT.params);
 	gui.setPosition(10, 300);
 
@@ -55,7 +55,7 @@ void ofApp::draw()
 	string str;
 	str += "PRESS UP/DOWN TO BROWSE '.cube' FILES\n";
 	str += "FROM FOLDER 'data/" + LUT.path_LUT_files + "/'\n";
-	str += "[" + ofToString(LUT.lutIndex) + "/" + ofToString(LUT.numLuts) + "] " + LUT.LUTname;
+	str += "[" + ofToString(LUT.lutIndex) + "/" + ofToString(LUT.numLuts) + "] " + ofToString(LUT.LUTname);
 	ofDrawBitmapStringHighlight(str, 10, 20);
 }
 

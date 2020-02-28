@@ -5,7 +5,7 @@ void ofApp::setup()
 {
 	LUT.setup();
 
-	gui.setup("CONTROL ofxGpuLutCube");
+	gui.setup("CONTROL");
 	gui.add(LUT.params);
 	gui.setPosition(10, 300);
 

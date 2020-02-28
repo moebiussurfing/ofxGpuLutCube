@@ -91,4 +91,4 @@ for the original https://github.com/yasuhirohoshino/ofxGpuLut
 - settings to store/load LUT by name..
 - .cube files browser system and thumbs maybe with ofxImGui..
 
-* FEEL FREE TO ADD MODIFICATIONS OR FEATURES AND TO SEND ME PULL REQUESTS
+FEEL FREE TO ADD MODIFICATIONS OR FEATURES AND TO SEND ME PULL REQUESTS

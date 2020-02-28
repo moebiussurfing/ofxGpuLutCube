@@ -9,7 +9,9 @@ void ofApp::setup()
 	gui.add(LUT.params);
 	gui.setPosition(10, 300);
 
+
 	image.load("picture.jpg");
+
 }
 
 //--------------------------------------------------------------
@@ -21,6 +23,9 @@ void ofApp::update()
 	image.draw(0, 0, ofGetWidth(), ofGetHeight());
 
 	LUT.end();
+
+
+	
 }
 
 //--------------------------------------------------------------
@@ -35,6 +40,8 @@ void ofApp::draw()
 	image.draw(ofGetWidth() - ww, 0, ww, ww*ratio);
 
 	//-
+
+	ofEnableArbTex();//i am not sure why, sometimes is required when combining with other fbo's
 
 	//gui
 	gui.draw();
@@ -64,5 +71,6 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h) {
 	LUT.windowResized(w, h);
+	
 }
 

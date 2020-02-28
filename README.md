@@ -1,8 +1,9 @@
 # ofxGpuLutCube
 
-openFrameworks addon to apply LUT (Color Lookup Table) filter shader from standard '.cube' files. (sizes 16, 32, 64)
+openFrameworks addon to apply LUT (Color Lookup Table) filter shader from the standard '.cube' files. (sizes 16, 32, 64)
+All process is done into GPU, so it's faster than other alternatives that use the CPU like the bundled ''\openFrameworks\examples\graphics\lutFilterExample''
 
-Inspired from https://github.com/yasuhirohoshino/ofxGpuLut that does the same but with 'special .png' files.
+Inspired from https://github.com/yasuhirohoshino/ofxGpuLut that does the almost same GPU process but with 'special .png' files.
 
 Cool Windows-only free app to batch convert and create LUT files:
 https://grossgrade.com/
@@ -35,7 +36,7 @@ LUT.setup();
 
 //update() or draw()
 LUT.begin();
-	//draw your scene
+    //draw your scene
 LUT.end();
 
 //draw()
@@ -89,10 +90,10 @@ for the original https://github.com/yasuhirohoshino/ofxGpuLut
 
 - set draw position and size (x, y, w, h)..
 - a better solution to v flip that sometimes happens..
-- no use internal FBO or add getter/setter to use by reference..
+- not use internal FBO or add getter/setter to use by reference..
 - better handling of arb tex modes..
 - a faster loader of files, threaded or cache some files..
 - settings to store/load LUT by name..
 - .cube files browser system and thumbs maybe with ofxImGui..
 
-FEEL FREE TO ADD MODIFICATIONS OR FEATURES AND TO SEND ME PULL REQUESTS
+PLEASE FEEL FREE TO ADD MODIFICATIONS OR FEATURES AND TO SEND ME PULL REQUESTS

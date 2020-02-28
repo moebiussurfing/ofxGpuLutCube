@@ -14,7 +14,7 @@ void ofxGpuLutCube::setup()
 	//-
 
 	//params
-	lutIndex.set("INDEX", 0, 0, numLuts - 1);
+	lutIndex.set("LUT", 0, 0, numLuts - 1);
 	LUTname.set("", "");
 	LUTname.setSerializable(false);
 	control1.set("MIX", 1, 0, 1);
@@ -344,7 +344,7 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 			ofLogNotice("ofxGpuLutCube") << "Changed_params_Addon: " << name << " : " << e;
 		}
 
-		if (name == "INDEX")
+		if (name == "LUT")
 		{
 			DISABLE_Callbacks = true;
 			if (lutIndex < 0)

@@ -86,7 +86,8 @@ void ofxGpuLutCube::setupFiles()
 	dir.listDir(path_LUT_files);
 	dir.sort();
 	numLuts = dir.size();
-	ofLogNotice(__FUNCTION__) << "num LUTs:" << numLuts;
+	ofLogNotice(__FUNCTION__) << "LUTs path   : " << path_LUT_files;
+	ofLogNotice(__FUNCTION__) << "LUTs amount : " << numLuts;
 
 	lutNames.resize(numLuts);
 	lutPaths.resize(numLuts);
@@ -102,8 +103,9 @@ void ofxGpuLutCube::setupFiles()
 		ofStringReplace(lutPath, "\\", "");//delete '\' char from name
 		lutNames[i] = lutPath;
 
-		ofLogNotice(__FUNCTION__) << "[" << i << "] " << lutPaths[i];
-		ofLogNotice(__FUNCTION__) << lutNames[i];
+		//ofLogNotice(__FUNCTION__) << "[" << i << "] " << lutPaths[i];
+		//ofLogNotice(__FUNCTION__) << "     " << lutNames[i];
+		ofLogNotice(__FUNCTION__) << "[" << i << "] " << lutNames[i];
 	}
 
 	lutIndex = 0;
@@ -112,9 +114,9 @@ void ofxGpuLutCube::setupFiles()
 //--------------------------------------------------------------
 bool ofxGpuLutCube::loadLUT(std::string s)
 {
-	ofLogNotice(__FUNCTION__) << "Index: " << lutIndex;
-	ofLogNotice(__FUNCTION__) << "Path: " << lutPaths[lutIndex];
-	ofLogNotice(__FUNCTION__) << "Name: " << lutNames[lutIndex];
+	ofLogNotice(__FUNCTION__) << "Index : " << lutIndex;
+	ofLogNotice(__FUNCTION__) << "Path  : " << lutPaths[lutIndex];
+	ofLogNotice(__FUNCTION__) << "Name  : " << lutNames[lutIndex];
 	LUTname = lutNames[lutIndex];
 
 	//-
@@ -218,7 +220,7 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 
 	//-
 
-	//must check if size is refused 
+	//must check if size or cuve file is refused 
 	if (bErrorBadSize)
 		return false;
 	else
@@ -236,6 +238,12 @@ void ofxGpuLutCube::begin()
 void ofxGpuLutCube::end()
 {
 	fbo.end();
+}
+
+//--------------------------------------------------------------
+void ofxGpuLutCube::draw(float w, float h)
+{
+
 }
 
 //--------------------------------------------------------------
@@ -273,7 +281,7 @@ void ofxGpuLutCube::draw()
 void ofxGpuLutCube::windowResized(int w, int h)
 {
 	ofDisableArbTex();
-	fbo.allocate(ofGetWidth(), ofGetHeight());
+	fbo.allocate(w, h);
 	ofEnableArbTex();
 
 	//TODO:
@@ -283,13 +291,13 @@ void ofxGpuLutCube::windowResized(int w, int h)
 	//set a plane to texture
 	if (!bFlip)
 	{
-		plane.set(ofGetWidth(), ofGetHeight(), 2, 2);//size, col, rows..
-		plane.setPosition(0.5f*ofGetWidth(), 0.5f*ofGetHeight(), 0);
+		plane.set(w, h, 2, 2);//size, col, rows..
+		plane.setPosition(0.5f*w, 0.5f*h, 0);
 	}
 	else
 	{
-		plane.set(ofGetWidth(), -ofGetHeight(), 2, 2);
-		plane.setPosition(0.5f*ofGetWidth(), 0.5f*ofGetHeight(), 0);
+		plane.set(w, -h, 2, 2);
+		plane.setPosition(0.5f*w, 0.5f*h, 0);
 	}
 }
 
@@ -354,7 +362,7 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 		if (name != "exclude"
 			&& name != "exclude")
 		{
-			ofLogNotice("ofxGpuLutCube") << "Changed_params_Addon: " << name << " : " << e;
+			ofLogNotice("ofxGpuLutCube") << "Changed_params: " << name << ":" << e;
 		}
 
 		if (name == "LUT")

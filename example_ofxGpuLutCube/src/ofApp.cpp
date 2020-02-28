@@ -9,9 +9,7 @@ void ofApp::setup()
 	gui.add(LUT.params);
 	gui.setPosition(10, 300);
 
-
 	image.load("picture.jpg");
-
 }
 
 //--------------------------------------------------------------

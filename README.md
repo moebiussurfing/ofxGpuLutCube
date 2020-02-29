@@ -2,7 +2,7 @@
 
 openFrameworks addon to apply LUT (Color Lookup Table) filter shader from the standard '.cube' files. (sizes 16, 32, 64)
 
-All process is done into GPU, so it's faster than other alternatives that use the CPU like the bundled \openFrameworks\examples\graphics\lutFilterExample'
+All process is done into GPU, so it's faster than other alternatives that use the CPU like the bundled '\openFrameworks\examples\graphics\lutFilterExample'
 
 Inspired from https://github.com/yasuhirohoshino/ofxGpuLut that does the almost same GPU process but with 'special .png' files.
 

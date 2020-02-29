@@ -18,11 +18,19 @@ void ofxGpuLutCube::setup()
 	LUTname.set("", "");//no name to reduce gui panel space
 	LUTname.setSerializable(false);//not interested to save name, just the index
 	control1.set("MIX", 1, 0, 1);
+	bPrevious.set("PREVIOUS");
+	bNext.set("NEXT");
 
 	params.setName("ofxGpuLutCube");
 	params.add(lutIndex);
 	params.add(LUTname);
+	params.add(bPrevious);
+	params.add(bNext);
 	params.add(control1);
+
+	//params_buttons.setName("_buttons_");
+	//params_buttons.add(bPrevious);
+	//params_buttons.add(bNext);
 
 	//TODO:
 	//another control to the shader..
@@ -33,8 +41,35 @@ void ofxGpuLutCube::setup()
 	//gui.setup("LUT");
 	//gui.add(params);
 
+	//-
+
+	//calbacks
+
 	//DISABLE_Callbacks = true;
+
+	//group
 	ofAddListener(params.parameterChangedE(), this, &ofxGpuLutCube::Changed_params);
+
+	//buttons
+	listener_bPrev = bPrevious.newListener([this](const void * sender) {
+		ofParameter<void> * p = (ofParameter<void> *)sender;
+		string name = p->getName();
+		ofLogNotice("ofxGpuLutCube") << "Changed_button_param: 'PREVIOUS'";
+		if (name == "PREVIOUS")
+		{
+			previous();
+		}
+	});
+	listener_bNext = bNext.newListener([this](const void * sender) {
+		ofParameter<void> * p = (ofParameter<void> *)sender;
+		string name = p->getName();
+		ofLogNotice("ofxGpuLutCube") << "Changed_button_param: 'NEXT'";
+		if (name == "NEXT")
+		{
+			next();
+		}
+	});
+
 	DISABLE_Callbacks = false;
 
 	//--
@@ -47,6 +82,7 @@ void ofxGpuLutCube::setup()
 	//source
 
 	//fbo settings
+	const bool bArbTex = ofGetUsingArbTex();
 	ofDisableArbTex();
 
 	ofFbo::Settings settings;
@@ -55,7 +91,7 @@ void ofxGpuLutCube::setup()
 	settings.height = ofGetHeight();
 	fbo.allocate(settings);
 
-	ofEnableArbTex();
+	if (bArbTex) { ofEnableArbTex(); }
 
 	//TODO:
 	//v flipping issues
@@ -152,7 +188,7 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		else if (ofIsStringInString(row, key_LUT_3D_SIZE)) {
 			vector<string> subs = ofSplitString(ofTrim(row), " ");
 			if (subs.size() >= 2) {
-				ofLogNotice(__FUNCTION__) << "found key_LUT_3D_SIZE: " << subs[1];
+				ofLogVerbose(__FUNCTION__) << "found key_LUT_3D_SIZE: " << subs[1];
 				LUT3dSize = ofToInt(subs[1]);
 			}
 		}
@@ -163,6 +199,8 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		ofLogError(__FUNCTION__) << "LUT size is incorrect.";
 		bErrorBadSize = true;
 
+		LUTname = "INCORRECT SIZE " + lutNames[lutIndex];
+
 		//return;//skip load this lut
 		//std::exit(1);
 	}
@@ -171,12 +209,14 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		ofLogError(__FUNCTION__) << "LUT needs to be pow2.";
 		bErrorBadSize = true;
 
+		LUTname = "POW2 ERROR " + lutNames[lutIndex];
+
 		//return;//skip load this lut
 		//std::exit(1);
 	}
 
-	ofLogNotice(__FUNCTION__) << "LUT.size(): " << LUT.size() << " --> " << int(ceil(pow(LUT.size(), 1.0 / 3.0)));
-	ofLogNotice(__FUNCTION__) << "LUT3dSize: " << LUT3dSize;
+	ofLogVerbose(__FUNCTION__) << "LUT.size(): " << LUT.size() << " --> " << int(ceil(pow(LUT.size(), 1.0 / 3.0)));
+	ofLogVerbose(__FUNCTION__) << "LUT3dSize: " << LUT3dSize;
 
 	//-
 
@@ -196,13 +236,13 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 
 	//--
 
-	if (bErrorBadSize == false)
+	if (bErrorBadSize == false)//if lut size/format is valid
 	{
 		//disable rectangle textures
+		const bool bArbTex = ofGetUsingArbTex();
 		ofDisableArbTex();
 
 		//reference from http://content.gpwiki.org/index.php/OpenGL:Tutorials:3D_Textures
-
 		//create a 3D texture
 		glEnable(GL_TEXTURE_3D);
 		glGenTextures(1, &texture3D);
@@ -216,6 +256,8 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 			GL_FLOAT, &LUT[0]);
 		glBindTexture(GL_TEXTURE_3D, 0);
 		glDisable(GL_TEXTURE_3D);
+
+		if (bArbTex) { ofEnableArbTex(); }
 	}
 
 	//-
@@ -240,17 +282,22 @@ void ofxGpuLutCube::end()
 	fbo.end();
 }
 
-//--------------------------------------------------------------
-void ofxGpuLutCube::draw(float w, float h)
-{
-
-}
+////TODO:
+////custom position and size..
+////--------------------------------------------------------------
+//void ofxGpuLutCube::draw(float x, float y)
+//{
+//
+//}
+////--------------------------------------------------------------
+//void ofxGpuLutCube::setSize(float w, float h)
+//{
+//
+//}
 
 //--------------------------------------------------------------
 void ofxGpuLutCube::draw()
 {
-	//ofEnableArbTex();//not required
-
 	//run lut shader
 	lutFilter.begin();
 
@@ -272,7 +319,12 @@ void ofxGpuLutCube::draw()
 	lutFilter.setUniform1f("lutSize", LUT3dSize);
 	lutFilter.setUniform2f("mouse", control1.get(), control2.get());//control: can rename 'mouse' (into shader filestoo) to something like controlxy..
 
-	plane.draw();
+	ofPushStyle();
+	{
+		ofSetColor(ofColor::white);
+		plane.draw();
+	}
+	ofPopStyle();
 
 	lutFilter.end();
 }
@@ -280,9 +332,12 @@ void ofxGpuLutCube::draw()
 //--------------------------------------------------------------
 void ofxGpuLutCube::windowResized(int w, int h)
 {
+	const bool bArbTex = ofGetUsingArbTex();
 	ofDisableArbTex();
+
 	fbo.allocate(w, h);
-	ofEnableArbTex();
+
+	if (bArbTex) { ofEnableArbTex(); }
 
 	//TODO:
 	//v flipping issues
@@ -359,14 +414,16 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 		string name = e.getName();
 
 		//exclude debugs
-		if (name != "exclude"
+		if (name != ""
 			&& name != "exclude")
 		{
-			ofLogNotice("ofxGpuLutCube") << "Changed_params: " << name << ":" << e;
+			ofLogNotice("ofxGpuLutCube") << "Changed_params: '" << name << "' : " << e;
 		}
 
-		if (name == "LUT")
+		if (name == "LUT" && lutIndex_PRE != lutIndex)
 		{
+			//ignore sliders on/release to avoid double loading the same lut
+
 			DISABLE_Callbacks = true;
 			if (lutIndex < 0)
 				lutIndex = 0;
@@ -389,9 +446,12 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 			//	//must check if size is refused 
 			//	loadLUT(lutPaths[lutIndex]);
 			//}
+
+			lutIndex_PRE = lutIndex;
 		}
 	}
 }
+
 
 //for internal gui
 ////--------------------------------------------------------------

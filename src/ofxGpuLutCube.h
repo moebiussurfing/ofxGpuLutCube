@@ -36,8 +36,12 @@ public:
 
 public:
 	void setup();
-	void draw();
-	void draw(float w, float h);
+	void draw();///full screen at position 0,0 by default
+
+	////TODO:
+	////custom position and size..
+	//void draw(float x, float y);
+	//void setSize(float w, float h);
 
 	void begin();
 	void end();
@@ -60,7 +64,9 @@ public:
 	ofParameter<std::string> LUTname;
 	ofParameter<int> lutIndex;
 	ofParameter<float> control1;
-	ofParameter<float> control2;
+	ofParameter<float> control2;//not used yet
+	ofParameter<void> bPrevious;
+	ofParameter<void> bNext;
 
 	//internal gui
 	//ofxPanel gui;
@@ -70,9 +76,15 @@ public:
 	void windowResized(int w, int h);
 
 private:
+	//callbacks
 	void Changed_params(ofAbstractParameter &e);
+	//buttons
+	ofEventListener listener_bPrev;
+	ofEventListener listener_bNext;
+
 	bool DISABLE_Callbacks;
-	
+	int lutIndex_PRE = -1;
+
 	bool loadLUT(std::string s);
 
 	ofFbo fbo;
@@ -85,7 +97,6 @@ private:
 
 public:
 	int numLuts;
-	//int lutIndex_PRE = 0;
 
 private:
 	//shader

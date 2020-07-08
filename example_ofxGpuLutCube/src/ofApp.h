@@ -21,4 +21,9 @@ public:
 
 	void keyPressed(int key);
 	void windowResized(int w, int h);
+
+	ofTrueTypeFont myFont;
+
+	int index = 0;
+#define NUM_PICTS 2
 };

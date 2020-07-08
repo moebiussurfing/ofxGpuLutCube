@@ -24,8 +24,8 @@ void ofxGpuLutCube::setup()
 	params.setName("ofxGpuLutCube");
 	params.add(lutIndex);
 	params.add(LUTname);
-	params.add(bPrevious);
 	params.add(bNext);
+	params.add(bPrevious);
 	params.add(control1);
 
 	//params_buttons.setName("_buttons_");

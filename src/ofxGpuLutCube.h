@@ -47,10 +47,13 @@ public:
 	void end();
 
 	//browse
-	void next();
-	void previous();
+	void loadNext();
+	void loadPrevious();
+	void loadRandomize();
+
 	int geNumtLuts();
 	void setSelectedLut(int i);
+	void loadLut(int i);
 	void setVflip(bool b)
 	{
 		bFlip = b;

@@ -54,21 +54,21 @@ void ofxGpuLutCube::setup()
 	listener_bPrev = bPrevious.newListener([this](const void * sender) {
 		ofParameter<void> * p = (ofParameter<void> *)sender;
 		string name = p->getName();
-		ofLogNotice("ofxGpuLutCube") << "Changed_button_param: 'PREVIOUS'";
+		ofLogNotice(__FUNCTION__) << "Changed_button_param: 'PREVIOUS'";
 		if (name == "PREVIOUS")
 		{
-			previous();
+			loadPrevious();
 		}
-	});
+		});
 	listener_bNext = bNext.newListener([this](const void * sender) {
 		ofParameter<void> * p = (ofParameter<void> *)sender;
 		string name = p->getName();
-		ofLogNotice("ofxGpuLutCube") << "Changed_button_param: 'NEXT'";
+		ofLogNotice(__FUNCTION__) << "Changed_button_param: 'NEXT'";
 		if (name == "NEXT")
 		{
-			next();
+			loadNext();
 		}
-	});
+		});
 
 	DISABLE_Callbacks = false;
 
@@ -150,9 +150,11 @@ void ofxGpuLutCube::setupFiles()
 //--------------------------------------------------------------
 bool ofxGpuLutCube::loadLUT(std::string s)
 {
-	ofLogNotice(__FUNCTION__) << "Index : " << lutIndex;
-	ofLogNotice(__FUNCTION__) << "Path  : " << lutPaths[lutIndex];
-	ofLogNotice(__FUNCTION__) << "Name  : " << lutNames[lutIndex];
+	//ofLogNotice(__FUNCTION__) << "Index : " << lutIndex;
+	//ofLogNotice(__FUNCTION__) << "Path  : " << lutPaths[lutIndex];
+	//ofLogNotice(__FUNCTION__) << "Name  : " << lutNames[lutIndex];
+	ofLogNotice(__FUNCTION__) << lutIndex << "/" << numLuts << " : " << lutPaths[lutIndex];
+
 	LUTname = lutNames[lutIndex];
 
 	//-
@@ -332,6 +334,8 @@ void ofxGpuLutCube::draw()
 //--------------------------------------------------------------
 void ofxGpuLutCube::windowResized(int w, int h)
 {
+	ofLogNotice(__FUNCTION__) << w << "," << h;
+
 	const bool bArbTex = ofGetUsingArbTex();
 	ofDisableArbTex();
 
@@ -357,8 +361,10 @@ void ofxGpuLutCube::windowResized(int w, int h)
 }
 
 //--------------------------------------------------------------
-void ofxGpuLutCube::next()
+void ofxGpuLutCube::loadNext()
 {
+	ofLogNotice(__FUNCTION__);
+
 	DISABLE_Callbacks = true;
 	int i = lutIndex;
 	i++;
@@ -370,8 +376,10 @@ void ofxGpuLutCube::next()
 }
 
 //--------------------------------------------------------------
-void ofxGpuLutCube::previous()
+void ofxGpuLutCube::loadPrevious()
 {
+	ofLogNotice(__FUNCTION__);
+
 	DISABLE_Callbacks = true;
 	int i = lutIndex;
 	i--;
@@ -380,6 +388,14 @@ void ofxGpuLutCube::previous()
 	DISABLE_Callbacks = false;
 
 	lutIndex = i;
+}
+
+//--------------------------------------------------------------
+void ofxGpuLutCube::loadRandomize()
+{
+	ofLogNotice(__FUNCTION__);
+
+	loadLut(ofRandom(numLuts));
 }
 
 //--------------------------------------------------------------
@@ -395,13 +411,19 @@ void ofxGpuLutCube::exit()
 }
 
 //--------------------------------------------------------------
+void ofxGpuLutCube::loadLut(int lut)
+{
+	ofLogNotice(__FUNCTION__) << lut;
+	setSelectedLut(lut);
+}
+
+//--------------------------------------------------------------
 void ofxGpuLutCube::setSelectedLut(int lut)
 {
+	ofLogNotice(__FUNCTION__) << lut;
 	DISABLE_Callbacks = true;
-	if (lut < 0)
-		lut = 0;
-	else if (lut > numLuts - 1)
-		lut = numLuts - 1;
+	if (lut < 0) lut = 0;
+	else if (lut > numLuts - 1) lut = numLuts - 1;
 	DISABLE_Callbacks = false;
 
 	lutIndex = lut;
@@ -417,7 +439,7 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 		if (name != ""
 			&& name != "exclude")
 		{
-			ofLogNotice("ofxGpuLutCube") << "Changed_params: '" << name << "' : " << e;
+			ofLogNotice(__FUNCTION__) << name << " : " << e;
 		}
 
 		if (name == "LUT" && lutIndex_PRE != lutIndex)
@@ -425,10 +447,8 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 			//ignore sliders on/release to avoid double loading the same lut
 
 			DISABLE_Callbacks = true;
-			if (lutIndex < 0)
-				lutIndex = 0;
-			else if (lutIndex > numLuts - 1)
-				lutIndex = numLuts - 1;
+			if (lutIndex < 0) lutIndex = 0;
+			else if (lutIndex > numLuts - 1) lutIndex = numLuts - 1;
 			DISABLE_Callbacks = false;
 
 			bool b = loadLUT(lutPaths[lutIndex]);

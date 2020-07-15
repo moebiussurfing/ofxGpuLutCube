@@ -12,12 +12,20 @@
 //THANKS to 
 //https://github.com/johanjohan to point me to this source here https://github.com/yasuhirohoshino/ofxGpuLut/issues/3
 
+
+///
+///	TODO:
+///
+///	+	add loading presets by name not by index (to allow add more cube files)
+///	+	add preview clickable thumbs of all cube files
+///	
+
+
 #pragma once
 
 #include "ofMain.h"
 
-//for internal gui
-//#include "ofxGui.h"
+#include "ofxGui.h"//for internal gui
 
 class ofxGpuLutCube {
 
@@ -32,17 +40,35 @@ public:
 
 	//----
 
-	//API
-
 public:
-	void setup();
-	void draw();///full screen at position 0,0 by default
 
-	////TODO:
+	void setup();
+
+	void draw();//draw processed image with full screen size and with position 0, 0 
+	//TODO: 
+	////resizable drawing
 	////custom position and size..
 	//void draw(float x, float y);
 	//void setSize(float w, float h);
 
+	void exit();
+	void windowResized(int w, int h);
+	
+	//--
+
+	//internal gui
+	ofxPanel gui;
+	void setupGui();
+	void drawGui();
+	
+	//help
+	void drawHelp();
+
+	//----
+
+	//API
+
+	//feed
 	void begin();
 	void end();
 
@@ -54,7 +80,7 @@ public:
 	int geNumtLuts();
 	void setSelectedLut(int i);
 	void loadLut(int i);
-	void setVflip(bool b)
+	void setVflip(bool b)//must be called before setup(). not implemented yet to work in realtime when drawing..
 	{
 		bFlip = b;
 	}
@@ -62,7 +88,7 @@ public:
 	//----
 
 public:
-	//params
+
 	ofParameterGroup params;
 	ofParameter<std::string> LUTname;
 	ofParameter<int> lutIndex;
@@ -70,13 +96,6 @@ public:
 	ofParameter<float> control2;//not used yet
 	ofParameter<void> bPrevious;
 	ofParameter<void> bNext;
-
-	//internal gui
-	//ofxPanel gui;
-	//void drawGui();
-
-	void exit();
-	void windowResized(int w, int h);
 
 private:
 	//callbacks
@@ -117,6 +136,47 @@ private:
 	//TODO:
 	//WORKAROUND
 	//v flipping issues
-	bool bFlip = true;
+	ofParameter<bool> bFlip{ "vFlip", true };
 	//ofTexture texFlipped;
+
+	//----
+
+	//helpers
+
+	ofTrueTypeFont font;
+	float fontSize;
+
+	//--------------------------------------------------------------
+	void drawTextBoxed(string text, int x, int y, int alpha = 255)
+	{
+		ofPushStyle();
+
+		int pad = 20;
+
+		if (!font.isLoaded()) {
+			ofDrawBitmapStringHighlight(text, x, y);
+		}
+		else {
+			//bbox
+			ofSetColor(0, alpha);
+			ofFill();
+			ofRectangle _r(font.getStringBoundingBox(text, x, y));
+			_r.setWidth(_r.getWidth() + pad);
+			_r.setHeight(_r.getHeight() + pad);
+			_r.setX(_r.getPosition().x - pad / 2.);
+			_r.setY(_r.getPosition().y - pad / 2.);
+			ofDrawRectangle(_r);
+
+			//text
+			ofSetColor(255, 255);
+			ofNoFill();
+			font.drawString(text, x, y);
+		}
+
+		ofPopStyle();
+	}
+	//--------------------------------------------------------------
+	float getWidthBBtextBoxed(string text) {
+		return (font.getStringBoundingBox(text,0,0)).getWidth();
+	}
 };

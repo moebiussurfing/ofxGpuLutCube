@@ -26,20 +26,26 @@ void ofxGpuLutCube::setup()
 	params.add(LUTname);
 	params.add(bNext);
 	params.add(bPrevious);
-	params.add(control1);
 
-	//params_buttons.setName("_buttons_");
-	//params_buttons.add(bPrevious);
-	//params_buttons.add(bNext);
+	params.add(control1);//mix
 
 	//TODO:
-	//another control to the shader..
-	//control2.set("control2", 1, 0, 1);//not used in shader
-	//params.add(control2);//not used in shader. could addit to other function..
+	//another control exposes in the shader but not used now.
+	//control2.set("control2", 1, 0, 1);
+	//params.add(control2);
+
+	//params.add(bFlip);//not implemented
+	
+	//-
 
 	//gui
-	//gui.setup("LUT");
-	//gui.add(params);
+	setupGui();
+
+	//-
+
+	//draw help font
+	fontSize = 15;
+	font.load(OF_TTF_MONO, fontSize);
 
 	//-
 
@@ -111,6 +117,20 @@ void ofxGpuLutCube::setup()
 	//-
 
 	//ofEnableArbTex();//NOTE: i am not sure why, sometimes is required when combining with other fbo's
+}
+
+//gui
+//--------------------------------------------------------------
+void ofxGpuLutCube::setupGui()
+{
+	gui.setup("CONTROL");
+	gui.add(params);
+	gui.setPosition(10, 300);
+}
+//--------------------------------------------------------------
+void ofxGpuLutCube::drawGui()
+{
+	gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -284,18 +304,27 @@ void ofxGpuLutCube::end()
 	fbo.end();
 }
 
-////TODO:
-////custom position and size..
-////--------------------------------------------------------------
-//void ofxGpuLutCube::draw(float x, float y)
-//{
-//
-//}
-////--------------------------------------------------------------
-//void ofxGpuLutCube::setSize(float w, float h)
-//{
-//
-//}
+//--------------------------------------------------------------
+void ofxGpuLutCube::drawHelp()
+{
+	float x, y;
+	x = 20;
+	y = 100;
+
+	//browsing info
+	string str;
+	str += "PRESS UP/DOWN TO BROWSE '.cube' FILES\n";
+	str += "FROM FOLDER 'data/" + path_LUT_files + "/'\n";
+	str += "[" + ofToString(lutIndex) + "/" + ofToString(numLuts - 1) + "] " + ofToString(LUTname);
+	drawTextBoxed(str, x, y);
+
+	//filename
+	//bottom cenetered
+	float w = getWidthBBtextBoxed(LUTname);
+	x = ofGetWidth() * 0.5f - w * 0.5f;
+	y = ofGetHeight() - 75;
+	drawTextBoxed(LUTname, x, y);
+}
 
 //--------------------------------------------------------------
 void ofxGpuLutCube::draw()
@@ -330,6 +359,19 @@ void ofxGpuLutCube::draw()
 
 	lutFilter.end();
 }
+
+////TODO:
+////custom position and size..
+////--------------------------------------------------------------
+//void ofxGpuLutCube::draw(float x, float y)
+//{
+//
+//}
+////--------------------------------------------------------------
+//void ofxGpuLutCube::setSize(float w, float h)
+//{
+//
+//}
 
 //--------------------------------------------------------------
 void ofxGpuLutCube::windowResized(int w, int h)
@@ -471,24 +513,3 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 		}
 	}
 }
-
-
-//for internal gui
-////--------------------------------------------------------------
-//void ofxGpuLutCube::drawGui()
-//{
-//	gui.draw();
-//}
-////--------------------------------------------------------------
-//void ofxGpuLutCube::keyPressed(int key)
-//{
-//	//browse luts
-//	if (key == OF_KEY_DOWN)
-//	{
-//
-//	}
-//	else if (key == OF_KEY_UP)
-//	{
-//
-//	}
-//}

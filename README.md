@@ -1,16 +1,17 @@
 # ofxGpuLutCube
 
-openFrameworks addon to apply LUT (Color Lookup Table) filters with a GPU shader using standard **.cube** files. (sizes 16, 32, 64)
+openFrameworks addon to apply `LUT (Color Lookup Table) filters` with a GPU shader using standard `.cube` files. (sizes 16, 32, 64)
 
-**All process is done live and fast into the GPU**,  
-so it's faster than other alternatives that use the CPU.  
+**All process is done live and fast into the GPU**  
+
+It's faster than other alternatives that use the CPU.  
 (like the bundled `openFrameworks\examples\graphics\lutFilterExample`)
 
 **Inspired from:**  
 https://github.com/yasuhirohoshino/ofxGpuLut  
 that does the almost same GPU process but with special `.png` files.
 
-A (maybe useful) cool Windows-only free app to batch convert and create LUT files:  
+An useful Windows-only free app to batch convert and create LUT files:  
 https://grossgrade.com/  
 
 
@@ -60,19 +61,20 @@ GpuLutCube.drawHelp();
 //helper methods
 GpuLutCube.loadNext();
 GpuLutCube.loadPrevious();
+GpuLutCube.loadLut(int i);
 GpuLutCube.loadRandomize();
 ```
 
 
 ## Features
 
-- Easy integration into your `ofApp` with an `ofParameterGroup` and an `ofxGui` panel
 - LUT files folder browsing using GUI or keys.
+- Easy integration into your `ofApp` with an `ofParameterGroup` and an `ofxGui` panel
 - Float parameter to set filter mix/dry.
 - Int parameter to select `LUT index`. 
 - String parameter to show `LUT name`.
 - Included example with `/data/` files (`LUT.cube` files + shader files).
-
+- Two testing images. LLeft/rioght keys to switch images.
 
 ## Tested system
 

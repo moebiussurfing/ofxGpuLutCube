@@ -17,11 +17,11 @@ https://grossgrade.com/
 
 ## Screenshots
 
-![Alt text](/screenshot0.JPG?raw=true "screenshot0")
-![Alt text](/screenshot1.JPG?raw=true "screenshot1")
-![Alt text](/screenshot2.JPG?raw=true "screenshot2")
-![Alt text](/screenshot3.JPG?raw=true "screenshot3")
-![Alt text](/screenshot4.JPG?raw=true "screenshot4")
+![Alt text](/readme_images/screenshot0.JPG?raw=true "screenshot0")
+![Alt text](/readme_images/screenshot1.JPG?raw=true "screenshot1")
+![Alt text](/readme_images/screenshot2.JPG?raw=true "screenshot2")
+![Alt text](/readme_images/screenshot3.JPG?raw=true "screenshot3")
+![Alt text](/readme_images/screenshot4.JPG?raw=true "screenshot4")
 
 
 ## Usage

@@ -113,4 +113,7 @@ for the original https://github.com/yasuhirohoshino/ofxGpuLut
 - `.cube` files browser system and thumbs maybe with `ofxImGui`.
   
   
-**PLEASE FEEL FREE TO ADD MODIFICATIONS/ISSUES/FEATURES AND TO SEND ME PULL REQUESTS**
+**PLEASE FEEL FREE TO ADD MODIFICATIONS/ISSUES/FEATURES AND TO SEND ME PULL REQUESTS**  
+
+## License
+MIT License.

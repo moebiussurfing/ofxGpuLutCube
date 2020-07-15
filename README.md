@@ -3,9 +3,10 @@
 openFrameworks addon to apply LUT (Color Lookup Table) filters with a GPU shader using standard **.cube** files. (sizes 16, 32, 64)
 
 **All process is done live and fast into the GPU**,  
-so it's faster than other alternatives that use the CPU. (like the bundled `openFrameworks\examples\graphics\lutFilterExample`)
+so it's faster than other alternatives that use the CPU.  
+(like the bundled `openFrameworks\examples\graphics\lutFilterExample`)
 
-Inspired from  
+**Inspired from:**  
 https://github.com/yasuhirohoshino/ofxGpuLut  
 that does the almost same GPU process but with special `.png` files.
 
@@ -62,7 +63,7 @@ GpuLutCube.drawHelp();
 
 ## Features
 
-- Easy integration into your `ofApp `with an `ofParameterGroup` and an `ofxGui` panel
+- Easy integration into your `ofApp` with an `ofParameterGroup` and an `ofxGui` panel
 - LUT files folder browsing using GUI or keys.
 - Float parameter to set filter mix/dry.
 - Int parameter to select `LUT index`. 
@@ -78,8 +79,9 @@ GpuLutCube.drawHelp();
 
 ## About
 
-Addon modifications by **MoebiusSurfing**
+Addon modifications by **MoebiusSurfing**  
 https://github.com/moebiussurfing
+  
 
 Based on and using the code of **HUBRIS**:
 https://github.com/youandhubris/GPU-LUT-OpenFrameworks  
@@ -108,6 +110,7 @@ for the original https://github.com/yasuhirohoshino/ofxGpuLut
 - To not use internal FBO or add getter/setter to use by reference.
 - A faster loader of files, threaded or cache some files.
 - Settings to store/load LUT by name.
-- **.cube** files browser system and thumbs maybe with `ofxImGui`.
-
+- `.cube` files browser system and thumbs maybe with `ofxImGui`.
+  
+  
 **PLEASE FEEL FREE TO ADD MODIFICATIONS/ISSUES/FEATURES AND TO SEND ME PULL REQUESTS**

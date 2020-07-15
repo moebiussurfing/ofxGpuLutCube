@@ -4,14 +4,15 @@ openFrameworks addon to apply LUT (Color Lookup Table) filter shader from the st
 (sizes 16, 32, 64)
 
 All process is done **live and fast into GPU**,  
-so it's faster than other alternatives that use the CPU like the OF bundled '\openFrameworks\examples\graphics\lutFilterExample'
+so it's faster than other alternatives that use the CPU like the OF bundled \openFrameworks\examples\graphics\lutFilterExample
 
 Inspired from  
 https://github.com/yasuhirohoshino/ofxGpuLut  
-that does the almost same GPU process but with 'special .png' files.
+that does the almost same GPU process but with special .png files.
 
 Cool Windows-only free app to batch convert and create LUT files:  
-https://grossgrade.com/
+https://grossgrade.com/  
+
 
 
 ## Screenshots
@@ -26,15 +27,15 @@ https://grossgrade.com/
 ## Usage
 
 ```c++
-ofApp.h:
+### ofApp.h:
 
 #include "ofxGpuLutCube.h"
 
 ofxGpuLutCube GpuLutCube;
 
-//--
+//----
 
-//ofApp.cpp:
+### ofApp.cpp:
 
 //setup()
 GpuLutCube.setup();
@@ -42,13 +43,16 @@ GpuLutCube.setup();
 //update() or draw()
 GpuLutCube.begin();
 {
-    //draw your scene here
+    //draw and feed your scene here
 }
 GpuLutCube.end();
 
 //draw()
 GpuLutCube.draw();
 
+//-
+
+//optional:
 
 //gui
 GpuLutCube.drawGui();

@@ -27,14 +27,14 @@ https://grossgrade.com/
 ## Usage
 
 ### ofApp.h
-```c++
+```cpp
 #include "ofxGpuLutCube.h"
 
 ofxGpuLutCube GpuLutCube;
 ```
   
 ### ofApp.cpp
-```c++
+```cpp
 //setup()
 GpuLutCube.setup();
 
@@ -47,17 +47,20 @@ GpuLutCube.end();
 
 //draw()
 GpuLutCube.draw();
+```
 
-//-
 
-//optional:
-
+```cpp
 //gui
 GpuLutCube.drawGui();
 
 //help
 GpuLutCube.drawHelp();
 
+//helper methods
+GpuLutCube.loadNext();
+GpuLutCube.loadPrevious();
+GpuLutCube.loadRandomize();
 ```
 
 

@@ -1,3 +1,2 @@
 ofxGpuLutCube
 ofxGui
-ofxSceneTEST

@@ -68,13 +68,13 @@ GpuLutCube.loadRandomize();
 
 ## Features
 
-- LUT files folder browsing using GUI or keys.
+- Browsing LUT files folder using GUI or keys.
 - Easy integration into your `ofApp` with an `ofParameterGroup` and an `ofxGui` panel
 - Float parameter to set filter mix/dry.
 - Int parameter to select `LUT index`. 
 - String parameter to show `LUT name`.
-- Included example with `/data/` files (`LUT.cube` files + shader files).
-- Two testing images. LLeft/rioght keys to switch images.
+- Included example with `/data/` files (291 `.cube` files + shader files).
+- Two testing images. Left/right keys to select images.
 
 ## Tested system
 

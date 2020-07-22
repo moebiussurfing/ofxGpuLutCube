@@ -1,9 +1,19 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
+void ofApp::refreshImage() {
+	sourceImg.clear();
+	if (indexImage == 0) sourceImg.loadImage("image0.jpg");
+	else if (indexImage == 1) sourceImg.loadImage("image1.png");
+	else if (indexImage == 2) sourceImg.loadImage("image2.jpg");
+	else if (indexImage == 3) sourceImg.loadImage("image3.jpg");
+	else if (indexImage == 4) sourceImg.loadImage("image4.jpg");
+	else if (indexImage == 5) sourceImg.loadImage("image5.jpg");
+}
+//--------------------------------------------------------------
 void ofApp::setup() {
-	sourceImg.loadImage("image1.png");
-	//sourceImg.loadImage("image2.jpg");
+	indexImage = 2;
+	refreshImage();
 
 	int size = 300;
 	sourceImg.resize(size, size);
@@ -34,7 +44,7 @@ void ofApp::setup() {
 //--------------------------------------------------------------
 void ofApp::update() {
 
-	if (doLUT) {
+	if (doLUT && sourceImg.isAllocated()) {
 		applyLUT(sourceImg.getPixels());
 	}
 }
@@ -42,31 +52,33 @@ void ofApp::update() {
 //--------------------------------------------------------------
 void ofApp::draw() {
 	ofBackgroundGradient(ofColor::gray, ofColor::black);
-
 	//ofTranslate(ofGetWidth()*0.5f, ofGetHeight()*0.5f, 0);
 
-	sourceImg.draw(0, 0);
+	if (sourceImg.isAllocated()) sourceImg.draw(0, 0);
 
 	lutPos.x = sourceImg.getWidth() + 10;
 	lutPos.y = 0;
 
-	if (doLUT) {
+	if (doLUT && lutImg.isAllocated()) {
 		lutImg.draw(lutPos.x, lutPos.y);
 	}
 
 
 	if (doLUT) {
 
-		lutImg.draw(lutPos.x, lutPos.y);
+		if (lutImg.isAllocated()) lutImg.draw(lutPos.x, lutPos.y);
 
 		ofDrawRectangle(thumbPos.x - 3, thumbPos.y - 3, 166, 126);
 
 		//ofDrawBitmapStringHighlight(dir.getName(dirLoadIndex), lutPos.x, -lutPos.y+50);
-		string str = dir.getName(dirLoadIndex) + " " + ofToString(dirLoadIndex) + "/" + ofToString(dir.size());
-
+		string str;
+		str += "\nIMAGE       : " + ofToString(indexImage);
+		str += "\nLUT FILE    : " + dir.getName(dirLoadIndex) + " " + ofToString(dirLoadIndex) + "/" + ofToString(dir.size());
+		str += "\nLUT_3D_SIZE : " + ofToString(LutSizeCurr);
+		str += "\n";
+		str += "\nKEYS        : UP/DOWN ARROWS TO BROWSE LUT FILES";
+		str += "\nKEYS        : RIGHT TO CHANGE SOURCE IMAGE";
 		ofDrawBitmapStringHighlight(str, 20, 500);
-
-		ofDrawBitmapStringHighlight("Use the up and down arrows of your keyboard \nto go through the different filters", 20, 540);
 
 	}
 	//else {
@@ -83,10 +95,28 @@ void ofApp::loadLUT(string path) {
 	for (int i = 0; i < 5; i++) {//TODO: ? must check text content, not only num of lines... maybe not, allways are 4 lines
 		getline(file, line);
 		ofLog() << "Skipped line: " << line;
+		cout << "line " + ofToString(i) + ": " << line << endl;//LUT_3D_SIZE 16
+		if (i == 3) {
+			cout << "> line " + ofToString(i) + ": " << line << endl;//LUT_3D_SIZE 16
+			auto _lutsize = ofSplitString(line, "LUT_3D_SIZE ");
+			cout << "LUT_3D_SIZE: " << (_lutsize[1]) << endl << endl;
+
+			LutSizeCurr = ofToInt(_lutsize[1]);
+		}
 	}
-	for (int z = 0; z < 32; z++) {//TODO: must check sizes../ num lines?
-		for (int y = 0; y < 32; y++) {
-			for (int x = 0; x < 32; x++) {
+
+	//for (int z = 0; z < 32; z++) {//TODO: must check sizes../ num lines?
+	//	for (int y = 0; y < 32; y++) {
+	//		for (int x = 0; x < 32; x++) {
+	//			glm::vec3 cur;
+	//			file >> cur.x >> cur.y >> cur.z;
+	//			lut[x][y][z] = cur;
+	//		}
+	//	}
+	//}
+	for (int z = 0; z < LutSizeCurr; z++) {//TODO: must check sizes../ num lines?
+		for (int y = 0; y < LutSizeCurr; y++) {
+			for (int x = 0; x < LutSizeCurr; x++) {
 				glm::vec3 cur;
 				file >> cur.x >> cur.y >> cur.z;
 				lut[x][y][z] = cur;
@@ -96,20 +126,37 @@ void ofApp::loadLUT(string path) {
 
 	LUTloaded = true;
 }
+
 //--------------------------------------------------------------
 void ofApp::applyLUT(ofPixelsRef pix) {
 	if (LUTloaded) {
-
-		for (size_t y = 0; y < pix.getHeight(); y++) {
+		//TODO: update all to size 16. now it's 32 only.
+		for (size_t y = 0; y < pix.getHeight(); y++) {//iterate all image pixels
 			for (size_t x = 0; x < pix.getWidth(); x++) {
 
-				ofColor color = pix.getColor(x, y);
+				ofColor color = pix.getColor(x, y);//pixel source color 
 
-				int lutPos[3];
+				int lutPos[3];//pixel lut
 				for (int m = 0; m < 3; m++) {
-					lutPos[m] = color[m] / 8;
-					if (lutPos[m] == 31) {
-						lutPos[m] = 30;
+					//lutPos[m] = color[m] / 8;
+					//if (lutPos[m] == 31) {
+					//	lutPos[m] = 30;//? smash pixel ?
+					//}
+
+					if (LutSizeCurr == 32) {
+						lutPos[m] = color[m] / 8;
+
+						if (lutPos[m] == LutSizeCurr - 1) {
+							lutPos[m] = LutSizeCurr - 2;//? smash pixel ?
+						}
+					}
+					//TODO: ?
+					else if (LutSizeCurr == 16) {
+						lutPos[m] = color[m] / 16;
+
+						if (lutPos[m] == LutSizeCurr - 1) {
+							lutPos[m] = LutSizeCurr - 2;//? smash pixel ?
+						}
 					}
 				}
 
@@ -117,7 +164,15 @@ void ofApp::applyLUT(ofPixelsRef pix) {
 				glm::vec3 end = lut[lutPos[0] + 1][lutPos[1] + 1][lutPos[2] + 1];
 
 				for (int k = 0; k < 3; k++) {
-					float amount = (color[k] % 8) / 8.0f;
+					float amount;
+
+					if (LutSizeCurr == 32) {
+						amount = (color[k] % 8) / 8.0f;
+					}
+					else if (LutSizeCurr == 16) {//
+						amount = (color[k] % 8) / 16.0f;
+					}
+
 					color[k] = (start[k] + amount * (end[k] - start[k])) * 255;
 				}
 
@@ -141,6 +196,12 @@ void ofApp::keyReleased(int key) {
 	switch (key) {
 	case ' ':
 		doLUT ^= true;
+		break;
+
+	case OF_KEY_RIGHT:
+		if (indexImage <= 4) indexImage++;
+		else indexImage = 0;
+		refreshImage();
 		break;
 
 	case OF_KEY_UP:
@@ -167,7 +228,7 @@ void ofApp::keyReleased(int key) {
 }
 
 void ofApp::doExportThumb() {
-	string str = "thumbs/" + dir.getName(dirLoadIndex) +"_" + ofToString(dirLoadIndex) + "_thumb.jpg";
+	string str = "thumbs/" + dir.getName(dirLoadIndex) + "_" + ofToString(dirLoadIndex) + "_thumb.jpg";
 	applyLUT(sourceImg.getPixels());
 	cout << "saving: " << str << endl;
 	lutImg.saveImage(str);

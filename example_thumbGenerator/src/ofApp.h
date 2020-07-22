@@ -52,7 +52,13 @@ public:
 	glm::vec3 thumbPos;
 	
 	bool LUTloaded;
-	glm::vec3 lut[32][32][32];
+	int indexImage = 0;
+	void refreshImage();
+
+#define MAX_LUT_SIZE 32
+	int LutSizeCurr = MAX_LUT_SIZE;
+
+	glm::vec3 lut[MAX_LUT_SIZE][MAX_LUT_SIZE][MAX_LUT_SIZE];
 	
 	ofImage lutImg;
 	

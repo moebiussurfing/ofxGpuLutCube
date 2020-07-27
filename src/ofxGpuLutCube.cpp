@@ -123,6 +123,7 @@ void ofxGpuLutCube::setup()
 //--------------------------------------------------------------
 void ofxGpuLutCube::setupGui()
 {
+	gui.setDefaultWidth(300);
 	gui.setup("CONTROL");
 	gui.add(params);
 	gui.setPosition(10, 300);
@@ -274,8 +275,7 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
-		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB, LUT3dSize, LUT3dSize, LUT3dSize, 0, GL_RGB,
-			GL_FLOAT, &LUT[0]);
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB, LUT3dSize, LUT3dSize, LUT3dSize, 0, GL_RGB, GL_FLOAT, &LUT[0]);
 		glBindTexture(GL_TEXTURE_3D, 0);
 		glDisable(GL_TEXTURE_3D);
 
@@ -410,8 +410,7 @@ void ofxGpuLutCube::loadNext()
 	DISABLE_Callbacks = true;
 	int i = lutIndex;
 	i++;
-	if (i >= numLuts)
-		i = 0;
+	if (i >= numLuts) i = 0;
 	DISABLE_Callbacks = false;
 
 	lutIndex = i;
@@ -425,8 +424,7 @@ void ofxGpuLutCube::loadPrevious()
 	DISABLE_Callbacks = true;
 	int i = lutIndex;
 	i--;
-	if (i <= 0)
-		i = numLuts - 1;
+	if (i <= 0) i = numLuts - 1;
 	DISABLE_Callbacks = false;
 
 	lutIndex = i;

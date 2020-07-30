@@ -1,9 +1,14 @@
 
+## This is WIP project to generate thumbnails from the LUt files.  
+
+* The idea is to preview and browse the available LUT files.  
+
 ![Screenshot of Example](Capture.PNG)  
-This is WIP project to generate thumbnails from the LUt files.  
 
 
------------------------------
+
+----------------------------------------------------
+
 
 #Level2_lutFilterExample
 --

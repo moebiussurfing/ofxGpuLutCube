@@ -3,7 +3,8 @@
 #include "ofMain.h"
 
 ///	TODO:
-///
+/// +	files hanlde snippets:
+/// 		https://github.com/roymacdonald/faceCropAndNormalize/blob/master/src/ofApp.cpp
 ///	+	must check sizes of lut files and adapt to this
 ///			now is looking for LUT_3D_SIZE 32 files
 ///			we have sometimes LUT_3D_SIZE 16

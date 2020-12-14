@@ -478,18 +478,20 @@ void thumbsBrowser::draw_ImGui(int x, int y, int w, int h) {
 		//ofxImGui::AddParameter(indexBrowser);
 		ofxImGui::AddParameter(nameMat);
 
+		//-
+
 		ofxImGui::AddParameter(bPathDirCustom);
 		ofxImGui::AddParameter(pathDirCustom);
 
-
+		//customize folder
 		if (ImGui::Button("Select Folder")) {
 			//Open the Open File Dialog
-			ofFileDialogResult openFileResult = ofSystemLoadDialog("Select a jpg or png", true, "thumbs");
+			ofFileDialogResult openFileResult = ofSystemLoadDialog("Select folder", true, "thumbs");
 
 			//Check if the user opened a file
 			if (openFileResult.bSuccess) {
 
-				ofLogNotice(__FUNCTION__) << ("User selected a file");
+				ofLogNotice(__FUNCTION__) << ("User selected a folder");
 
 				//We have a file, check it and process it
 				processOpenFileSelection(openFileResult);

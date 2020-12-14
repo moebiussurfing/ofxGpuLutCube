@@ -88,7 +88,8 @@ void ofxGpuLutCube::setup()
 	//source
 
 	//fbo settings
-	const bool bArbTex = ofGetUsingArbTex();
+
+	bool bArbPRE = ofGetUsingArbTex();
 	ofDisableArbTex();
 
 	ofFbo::Settings settings;
@@ -97,7 +98,10 @@ void ofxGpuLutCube::setup()
 	settings.height = ofGetHeight();
 	fbo.allocate(settings);
 
-	if (bArbTex) { ofEnableArbTex(); }
+	if (bArbPRE) ofEnableArbTex();
+	else ofDisableArbTex();
+
+	//-
 
 	//TODO:
 	//v flipping issues
@@ -279,7 +283,8 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 		glBindTexture(GL_TEXTURE_3D, 0);
 		glDisable(GL_TEXTURE_3D);
 
-		if (bArbTex) { ofEnableArbTex(); }
+		if (bArbTex) ofEnableArbTex();
+		else ofDisableArbTex();
 	}
 
 	//-
@@ -378,12 +383,15 @@ void ofxGpuLutCube::windowResized(int w, int h)
 {
 	ofLogNotice(__FUNCTION__) << w << "," << h;
 
-	const bool bArbTex = ofGetUsingArbTex();
+	bool bArbPRE = ofGetUsingArbTex();
 	ofDisableArbTex();
 
 	fbo.allocate(w, h);
 
-	if (bArbTex) { ofEnableArbTex(); }
+	if (bArbPRE) ofEnableArbTex();
+	else ofDisableArbTex();
+
+	//-
 
 	//TODO:
 	//v flipping issues
@@ -476,8 +484,8 @@ void ofxGpuLutCube::Changed_params(ofAbstractParameter &e)
 		string name = e.getName();
 
 		//exclude debugs
-		if (name != ""
-			&& name != "exclude")
+		if (name != "" && 
+			name != "exclude")
 		{
 			ofLogNotice(__FUNCTION__) << name << " : " << e;
 		}

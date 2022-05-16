@@ -73,8 +73,8 @@ GpuLutCube.loadRandomize();
 - Float parameter to set filter mix/dry.
 - Int parameter to select `LUT index`. 
 - String parameter to show `LUT name`.
-- Included example with `/data/` files (291 `.cube` files + shader files).
-- Two testing images. Left/right keys to select images.
+- Included example with `/data/` files (291 `.cube` files + shader files).(Remember to include ```/data``` files!)
+- Two testing images. Left/Right keys to select images.
 
 ## Tested system
 

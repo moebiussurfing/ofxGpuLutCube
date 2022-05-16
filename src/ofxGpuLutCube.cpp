@@ -266,6 +266,7 @@ bool ofxGpuLutCube::loadLUT(std::string s)
 	if (bErrorBadSize == false)//if lut size/format is valid
 	{
 		//disable rectangle textures
+		//TODO: required here or only when allocating?
 		const bool bArbTex = ofGetUsingArbTex();
 		ofDisableArbTex();
 
